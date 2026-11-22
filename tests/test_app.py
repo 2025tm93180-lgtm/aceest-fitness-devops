@@ -105,3 +105,76 @@ def test_get_programs(client):
     assert "Fat Loss" in data
     assert "Muscle Gain" in data
     assert "Beginner" in data
+
+
+
+
+def test_add_client_with_empty_name(client):
+    response = client.post(
+        "/clients",
+        json={"name": "   "}
+    )
+
+    assert response.status_code == 400
+
+
+def test_add_client_with_invalid_json(client):
+    response = client.post(
+        "/clients",
+        data="invalid json",
+        content_type="application/json"
+    )
+
+    assert response.status_code == 400
+
+
+def test_add_client_with_negative_age(client):
+    response = client.post(
+        "/clients",
+        json={"name": "Rahul", "age": -5}
+    )
+
+    assert response.status_code == 400
+
+
+def test_add_client_with_invalid_age_type(client):
+    response = client.post(
+        "/clients",
+        json={"name": "Rahul", "age": 25.5}
+    )
+
+    assert response.status_code == 400
+
+
+def test_add_client_with_invalid_height(client):
+    response = client.post(
+        "/clients",
+        json={"name": "Rahul", "height": -170}
+    )
+
+    assert response.status_code == 400
+
+
+def test_add_client_with_invalid_weight(client):
+    response = client.post(
+        "/clients",
+        json={"name": "Rahul", "weight": 0}
+    )
+
+    assert response.status_code == 400
+
+
+def test_add_client_with_valid_data(client):
+    response = client.post(
+        "/clients",
+        json={
+            "name": "Anita",
+            "age": 28,
+            "height": 165,
+            "weight": 60,
+            "program": "Fat Loss"
+        }
+    )
+
+    assert response.status_code == 201
+    assert response.get_json()["name"] == "Anita"
