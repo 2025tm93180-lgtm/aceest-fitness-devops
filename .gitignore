@@ -17,3 +17,7 @@ __pycache__/
 /kubectl
 /kubectl.sha256
 /minikube-linux-amd64
+
+# SonarQube analysis files
+.scannerwork/
+

@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -26,6 +27,21 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                withCredentials([string(
+                    credentialsId: 'sonarqube-token',
+                    variable: 'SONAR_TOKEN'
+                )]) {
+                    sh '''
+                        /opt/sonar-scanner-8.3.1.16491-linux-x64/bin/sonar-scanner \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.token="$SONAR_TOKEN"
+                    '''
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .'
@@ -33,7 +49,6 @@ pipeline {
         }
 
         stage('Push to Docker Hub') {
- 
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub-credentials',
