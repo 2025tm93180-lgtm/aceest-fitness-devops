@@ -30,7 +30,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(
-                    credentialsId: 'sonarqube-token',
+                    credentialsId: 'sonarqube-token-text',
                     variable: 'SONAR_TOKEN'
                 )]) {
                     sh '''
