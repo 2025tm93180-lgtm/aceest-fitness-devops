@@ -10,17 +10,16 @@ clients = []
 def home():
     return jsonify({
         "application": "ACEest Fitness & Gym",
-        "version": "1.1.0",
+        "version": "1.2.0",
         "status": "running"
     })
-
 
 @app.route("/health")
 def health():
     return jsonify({
-        "status": "healthy"
+        "status": "healthy",
+        "version": "1.2.0"
     })
-
 
 @app.route("/clients", methods=["GET"])
 def get_clients():
